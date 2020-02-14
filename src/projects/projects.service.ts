@@ -15,7 +15,10 @@ export class ProjectsService {
   }
 
   async findAll(): Promise<Project[]> {
-    return await this.projectModel.find().exec();
+    return await this.projectModel
+      .find()
+      .populate('tasks')
+      .exec();
   }
 
   async create(project: ProjectInput): Promise<Project> {
@@ -31,6 +34,19 @@ export class ProjectsService {
       throw new Error(error);
     } finally {
       return 'Task done';
+    }
+  }
+
+  async update(id: string, update: ProjectInput): Promise<string> {
+    try {
+      console.log(id, update);
+      const updated = await this.projectModel.updateOne({ _id: id }, update);
+      console.log(updated);
+    } catch (error) {
+      console.log(error);
+      throw new Error(error);
+    } finally {
+      return 'Updated';
     }
   }
 }

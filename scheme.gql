@@ -6,11 +6,13 @@
 type CreateProjectDto {
   id: ID!
   name: String!
+  tasks: [TaskDto!]!
 }
 
 type Mutation {
   create(input: ProjectInput!): CreateProjectDto!
   delete(id: String!): String!
+  createTask(input: TaskInputDto!, projectId: String!): [TaskDto!]!
 }
 
 input ProjectInput {
@@ -20,4 +22,24 @@ input ProjectInput {
 type Query {
   projects: [CreateProjectDto!]!
   project(id: String!): CreateProjectDto!
+  tasks(projectId: String!): [TaskDto!]!
+}
+
+type TaskDto {
+  id: ID!
+  name: String!
+  content: String!
+  isCompleted: Boolean!
+  isCanceled: Boolean!
+  completedAt: String!
+  canceledAt: String!
+}
+
+input TaskInputDto {
+  name: String!
+  content: String!
+  isCompleted: Boolean!
+  isCanceled: Boolean!
+  completedAt: String!
+  canceledAt: String!
 }
