@@ -37,16 +37,15 @@ export class ProjectsService {
     }
   }
 
-  async update(id: string, update: ProjectInput): Promise<string> {
+  async update(id: string, update: any): Promise<Project> {
     try {
-      console.log(id, update);
-      const updated = await this.projectModel.updateOne({ _id: id }, update);
-      console.log(updated);
+      const updated = await this.projectModel.findOneAndUpdate(
+        { _id: id },
+        update,
+      );
+      return updated;
     } catch (error) {
-      console.log(error);
       throw new Error(error);
-    } finally {
-      return 'Updated';
     }
   }
 }

@@ -12,7 +12,8 @@ type CreateProjectDto {
 type Mutation {
   create(input: ProjectInput!): CreateProjectDto!
   delete(id: String!): String!
-  createTask(input: TaskInputDto!, projectId: String!): [TaskDto!]!
+  createTask(input: TaskInputDto!, projectId: String!): TaskDto!
+  deleteTask(id: String!): String!
 }
 
 input ProjectInput {

@@ -16,22 +16,20 @@ export class TasksService {
     return await this.taskModel.find({ projectId }).exec();
   }
 
-  async create(projectId: string, task: TaskInputDto): Promise<Task[]> {
+  async create(projectId: string, task: TaskInputDto): Promise<Task> {
     const createdTask = new this.taskModel(task);
-    return await createdTask.save(async err => {
-      if (err) return err;
-
-      const currentProject = await this.projectsService.findById(projectId);
-
-      console.log(currentProject);
-      if (!currentProject.tasks) {
-        currentProject.tasks = [];
-      }
-
-      currentProject.tasks.push(createdTask._id);
-      this.projectsService.update(projectId, currentProject);
-
-      return currentProject.tasks;
+    await this.projectsService.update(projectId, {
+      $push: { tasks: createdTask._id },
     });
+    return await createdTask.save();
+  }
+
+  async update(id: string, update: any): Promise<Task> {
+    return await this.taskModel.findOneAndUpdate({ _id: id }, update);
+  }
+
+  async delete(id: string): Promise<boolean> {
+    const status = await this.taskModel.deleteOne({ _id: id });
+    return status.deletedCount > 0 && status.ok === 1 ? true : false;
   }
 }

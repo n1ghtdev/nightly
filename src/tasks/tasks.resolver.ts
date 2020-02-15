@@ -12,11 +12,16 @@ export class TasksResolver {
     return this.tasksService.findByProjectId(projectId);
   }
 
-  @Mutation(() => [TaskDto])
+  @Mutation(() => TaskDto)
   async createTask(
     @Args('projectId') projectId: string,
     @Args('input') input: TaskInputDto,
   ) {
     return this.tasksService.create(projectId, input);
+  }
+
+  @Mutation(() => String)
+  async deleteTask(@Args('id') id: string) {
+    return this.tasksService.delete(id);
   }
 }

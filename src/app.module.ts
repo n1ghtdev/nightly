@@ -10,8 +10,14 @@ import { TasksModule } from './tasks/tasks.module';
   imports: [
     ProjectsModule,
     TasksModule,
-    GraphQLModule.forRoot({ autoSchemaFile: 'scheme.gql' }),
-    MongooseModule.forRoot(database),
+    GraphQLModule.forRoot({
+      autoSchemaFile: 'scheme.gql',
+    }),
+    MongooseModule.forRoot(database, {
+      useFindAndModify: false,
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }),
   ],
   providers: [AppService],
 })
