@@ -1,29 +1,38 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { ProjectsService } from './projects.service';
-import { CreateProjectDto } from './dto/create-project.dto';
-import { ProjectInput } from './inputs/project.input';
+import { ProjectDto } from './dto/project.dto';
+import { CreateProjectInput } from './inputs/create-project.input';
+import { UpdateProjectInput } from './inputs/update-project.input';
 
 @Resolver('Projects')
 export class ProjectsResolver {
   constructor(private readonly projectsService: ProjectsService) {}
 
-  @Mutation(() => CreateProjectDto)
-  async create(@Args('input') input: ProjectInput) {
+  @Mutation(() => ProjectDto)
+  async create(@Args('input') input: CreateProjectInput) {
     return this.projectsService.create(input);
   }
 
-  @Query(() => [CreateProjectDto])
+  @Query(() => [ProjectDto])
   async projects() {
     return this.projectsService.findAll();
   }
 
-  @Query(() => CreateProjectDto)
+  @Query(() => ProjectDto)
   async project(@Args('id') id: string) {
     return this.projectsService.findById(id);
   }
 
-  @Mutation(() => String)
+  @Mutation(() => Boolean)
   async delete(@Args('id') id: string) {
     return this.projectsService.delete(id);
+  }
+
+  @Mutation(() => Boolean)
+  async update(
+    @Args('id') id: string,
+    @Args('updateData') updateData: UpdateProjectInput,
+  ) {
+    return this.projectsService.update(id, updateData);
   }
 }

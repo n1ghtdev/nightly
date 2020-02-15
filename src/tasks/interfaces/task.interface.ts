@@ -1,11 +1,12 @@
 export interface Task {
-  id?: string;
+  id: string;
   projectId: string;
   name: string;
-  content: string;
-  isCompleted: boolean;
-  isCanceled: boolean;
-  createdAt: string;
-  completedAt: string;
-  canceledAt: string;
+  content?: string;
+  isCompleted?: boolean;
+  isCanceled?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
+  completedAt?: Date;
+  canceledAt?: Date;
 }

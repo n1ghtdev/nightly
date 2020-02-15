@@ -3,44 +3,54 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
-type CreateProjectDto {
+input CreateProjectInput {
+  name: String!
+}
+
+input CreateTaskInput {
+  name: String!
+  content: String
+  isCompleted: Boolean
+  isCanceled: Boolean
+}
+
+"""
+The javascript `Date` as string. Type represents date and time as the ISO Date string.
+"""
+scalar DateTime
+
+type Mutation {
+  create(input: CreateProjectInput!): ProjectDto!
+  delete(id: String!): Boolean!
+  update(updateData: UpdateProjectInput!, id: String!): Boolean!
+  createTask(input: CreateTaskInput!, projectId: String!): TaskDto!
+  deleteTask(id: String!): Boolean!
+  updateTask(updateData: CreateTaskInput!, id: String!): Boolean!
+}
+
+type ProjectDto {
   id: ID!
   name: String!
   tasks: [TaskDto!]!
 }
 
-type Mutation {
-  create(input: ProjectInput!): CreateProjectDto!
-  delete(id: String!): String!
-  createTask(input: TaskInputDto!, projectId: String!): TaskDto!
-  deleteTask(id: String!): String!
-}
-
-input ProjectInput {
-  name: String!
-}
-
 type Query {
-  projects: [CreateProjectDto!]!
-  project(id: String!): CreateProjectDto!
+  projects: [ProjectDto!]!
+  project(id: String!): ProjectDto!
   tasks(projectId: String!): [TaskDto!]!
 }
 
 type TaskDto {
   id: ID!
+  projectId: ID!
   name: String!
   content: String!
   isCompleted: Boolean!
   isCanceled: Boolean!
-  completedAt: String!
-  canceledAt: String!
+  completedAt: DateTime!
+  canceledAt: DateTime!
 }
 
-input TaskInputDto {
-  name: String!
-  content: String!
-  isCompleted: Boolean!
-  isCanceled: Boolean!
-  completedAt: String!
-  canceledAt: String!
+input UpdateProjectInput {
+  name: String
 }
